@@ -87,11 +87,14 @@ class Router
 
     protected function buildRegExp()
     {
-        $replace_from = '({[a-zA-Z0-9]+})';
-        $replace_to = '([0-9a-zA-Z]+)';
-        $pattern = '#^' . str_replace('/', '\/', $this->uri_pattern) . '$#';
-        $re = preg_replace($replace_from, $replace_to, $pattern);
-        return $re;
+        $pattern = preg_replace_callback('#\/{[a-zA-Z0-9_]+\??}#', function ($matches) {
+            if (strpos($matches[0], '?') !== false) {
+                return '(\/[0-9a-zA-Z_]+)?';
+            }
+            return '\/([0-9a-zA-Z]+)';
+        }, $this->uri_pattern);
+
+        return '#^' . $pattern . '$#';
 
     }
     protected function parseUri($uri, $re)
@@ -100,6 +103,9 @@ class Router
             return false;
         }
         unset($matches[0]);
+        foreach ($matches as &$item) {
+            $item = trim($item, '/');
+        }
         $this->args = $matches;
         return true;
     }

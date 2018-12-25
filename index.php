@@ -65,5 +65,9 @@ $app = new App();
 $app->get('/', function () { return 'root';});
 $app->get('/home',function() { return 'home';});
 $app->get('/users', 'Users@getList');
-$app->get('/users/{status}/{role}', 'Users@getFilteredUsers');
+$app->get('/users/{role}/{status?}', 'Users@getFilteredUsers');
 $app->run();
+
+///users/active/admin
+/// /?page=1&node=2
+///

@@ -25,10 +25,11 @@ class Users
         return $this->users;
     }
 
-    public function getFilteredUsers($status, $role = false)
+    public function getFilteredUsers($role, $status = false)
     {
         return array_filter($this->users, function ($item) use($status, $role) {
-            return $item['status'] == $status && $item['role'] == $role;
+            if ($item['role'] !== $role) return false;
+            return $status ?  $item['status'] == $status : true;
         });
     }
 }

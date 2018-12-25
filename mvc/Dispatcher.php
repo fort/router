@@ -32,7 +32,6 @@ class Dispatcher
         $controller = $this->router->getController();
         $method = $this->router->getAction();
         $args = $this->router->getArgs();
-        $args[] = 'price';
 
         if (!class_exists($controller)) {
             throw new Exception("controller {$controller} not found!");
