@@ -1,0 +1,13 @@
+.idea
+*.iml
+
+node_modules
+.DS_Store
+Thumbs.db
+npm-debug.log
+
+#logs
+error_log
+access_log
+
+site/*
