@@ -66,8 +66,12 @@ $app->get('/', function () { return 'root';});
 $app->get('/home',function() { return 'home';});
 $app->get('/users', 'Users@getList');
 $app->get('/users/{role}/{status?}', 'Users@getFilteredUsers');
+$app->get('posts/{post_id}/comments/{comment_id}', 'Users@getPostComment');
 $app->run();
+
+//posts/10/comments/100
 
 ///users/active/admin
 /// /?page=1&node=2
 ///
+//TODO: implement input params for Request object

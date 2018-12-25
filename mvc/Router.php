@@ -67,6 +67,8 @@ class Router
     public function match($uri)
     {
         $uri = trim($uri, '/');
+        $uri = substr($uri, 0, strpos($uri, '?'));
+
         if (strpos($this->uri_pattern, '{') !== false) {
             $re = $this->buildRegExp($uri);
             return $this->parseUri($uri, $re);

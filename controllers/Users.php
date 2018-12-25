@@ -32,4 +32,9 @@ class Users
             return $status ?  $item['status'] == $status : true;
         });
     }
+
+    public function getPostComment(Request $request, $postId, $commentId)
+    {
+        var_dump($request->getUri(), $postId, $commentId);
+    }
 }

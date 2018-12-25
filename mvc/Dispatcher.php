@@ -29,21 +29,30 @@ class Dispatcher
     protected function processObject()
     {
         //Users@list
-        $controller = $this->router->getController();
+        $className = $this->router->getController();
         $method = $this->router->getAction();
         $args = $this->router->getArgs();
 
-        if (!class_exists($controller)) {
-            throw new Exception("controller {$controller} not found!");
+        if (!class_exists($className)) {
+            throw new Exception("controller {$className} not found!");
         }
 
-        $controllerObj = new $controller();
-        if (!method_exists($controllerObj, $method)) {
+        $controller = new $className();
+        if (!method_exists($controller, $method)) {
 
-            throw new Exception("controller {$controller}:{$method} not exists!");
+            throw new Exception("controller {$className}:{$method} not exists!");
         }
 
-        return call_user_func_array(array($controllerObj, $method), $args);
+        $reflection = new ReflectionMethod($className, $method);
+        $params = $reflection->getParameters();
+        if ($params) {
+            $firstParam = current($params);
+            if ($firstParam->getClass() && $firstParam->getClass()->name == 'Request') {
+                array_unshift($args, $this->request);
+            }
+        }
+
+        return call_user_func_array(array($controller, $method), $args);
 
     }
 
